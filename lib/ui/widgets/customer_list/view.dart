@@ -7,8 +7,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 
 class CustomerListComponent extends StatelessWidget {
-  HomeLogic controller = Get.find<HomeLogic>();
-  Stream<QuerySnapshot<Customer>> customerStream;
+  final HomeLogic controller = Get.find<HomeLogic>();
+  final Stream<QuerySnapshot<Customer>> customerStream;
 
   CustomerListComponent({super.key, required this.customerStream});
 

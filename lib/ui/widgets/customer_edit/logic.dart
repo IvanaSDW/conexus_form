@@ -64,7 +64,7 @@ class CustomerEditLogic extends GetxController {
           initForm();
           Get.snackbar('Success', response.message!,
               icon: const Icon(Icons.check_circle_outline));
-          homeController.showBelow = 'detail_card';
+          homeController.showWidget = 'detail_card';
         } else {
           Get.snackbar('Error :(', response.message!, icon: const Icon(Icons.error));
           _status.value = RxStatus.error(response.message!);
@@ -78,7 +78,7 @@ class CustomerEditLogic extends GetxController {
   }
 
   onCancel() {
-    homeController.showBelow = 'detail_card';
+    homeController.showWidget = 'detail_card';
   }
 
   void initForm() {

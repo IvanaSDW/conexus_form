@@ -20,41 +20,47 @@ class HomePage extends StatelessWidget {
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Obx(() {
-            return Column(children: [
-              Card(
-                margin: const EdgeInsets.all(16.0),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                    onChanged: (value) {
-                      logic.searchString = value;
-                    },
-                    decoration: const InputDecoration(
-                      labelText: 'Search',
-                      suffixIcon: Icon(Icons.search),
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                  child: CustomerListComponent(
-                customerStream: logic.customerStream,
-              )),
-              logic.showBelow == 'detail_card'
-                  ? CustomerDetailCardComponent(customer: logic.currentCustomer)
-                  : logic.showBelow == 'new_customer_form'
-                      ? CustomerFormComponent()
-                      : logic.showBelow == 'edit_customer_form'
-                          ? CustomerEditComponent()
-                          : const SizedBox.shrink(),
-            ]);
+            return logic.showWidget == 'new_customer_form'
+                ? SingleChildScrollView(child: CustomerFormComponent())
+                : logic.showWidget == 'edit_customer_form'
+                    ? SingleChildScrollView(child: CustomerEditComponent())
+                    : Column(children: [
+                        Card(
+                          clipBehavior: Clip.none,
+                          margin: const EdgeInsets.all(16.0),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextField(
+                              onChanged: (value) {
+                                logic.searchString = value;
+                              },
+                              decoration: const InputDecoration(
+                                labelText: 'Buscar',
+                                suffixIcon: Icon(Icons.search),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                            child: CustomerListComponent(
+                                customerStream: logic.customerStream)),
+                        logic.currentCustomer.value.email.trim().isNotEmpty
+                            ? CustomerDetailCardComponent(
+                                customer: logic.currentCustomer)
+                            : const SizedBox.shrink()
+                      ]);
           }),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => logic.onFab(),
-          tooltip: 'Add new customer',
-          child: const Icon(Icons.add),
-        ),
+        floatingActionButton: Obx(() {
+          return Visibility(
+            visible: logic.showWidget != 'new_customer_form',
+            child: FloatingActionButton(
+              onPressed: () => logic.onFab(),
+              tooltip: 'Agregar un nuevo cliente',
+              child: const Icon(Icons.add),
+            ),
+          );
+        }),
         floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       );
     });

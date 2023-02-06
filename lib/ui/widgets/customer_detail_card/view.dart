@@ -79,7 +79,7 @@ class CustomerDetailCardComponent extends StatelessWidget {
                         horizontal: 8.0, vertical: 4.0),
                     child: Row(
                       children: [
-                        const Expanded(flex: 2, child: Text('Phone: ')),
+                        const Expanded(flex: 2, child: Text('Móvil: ')),
                         Expanded(flex: 8, child: Text(customer.value.phone)),
                       ],
                     ),
@@ -87,6 +87,14 @@ class CustomerDetailCardComponent extends StatelessWidget {
                 ],
               );
             }),
+          ),
+          Positioned(
+            top: -4,
+            left: -4,
+            child: TextButton(
+              onPressed: () => homeController.currentCustomer.value = Customer.empty(),
+              child: const Text('cerrar', style: TextStyle(color: Colors.red)),
+            ),
           ),
           Positioned(
             top: 4,

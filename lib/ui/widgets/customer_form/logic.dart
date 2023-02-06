@@ -70,7 +70,7 @@ class CustomerFormLogic extends GetxController {
           resetForm();
           Get.snackbar('Success', response.message!,
               icon: const Icon(Icons.check_circle_outline));
-          homeController.showBelow = 'none';
+          homeController.showWidget = 'none';
         } else {
           Get.snackbar('Error :(', response.message!, icon: Icon(Icons.error));
           _status.value = RxStatus.error(response.message!);
@@ -84,7 +84,7 @@ class CustomerFormLogic extends GetxController {
   }
 
   onCancel() {
-    homeController.showBelow = 'none';
+    homeController.showWidget = 'none';
   }
 
   void resetForm() {

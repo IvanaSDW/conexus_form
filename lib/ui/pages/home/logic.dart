@@ -8,7 +8,7 @@ import '../../../core/services/firebase_crud.dart';
 import '../../../core/services/response.dart';
 
 class HomeLogic extends GetxController {
-  String title = 'Conexus IT - Customer Management';
+  String title = 'Conexus IT - Gestión de Clientes';
 
   final RxString _searchString = ''.obs;
   String get searchString => _searchString.value;
@@ -19,9 +19,9 @@ class HomeLogic extends GetxController {
   Customer? get getCurrentCustomer => currentCustomer.value;
   set setCurrentCustomer(Customer value) => currentCustomer.value = value;
 
-  final RxString _showBelow = 'none'.obs;
-  String get showBelow => _showBelow.value;
-  set showBelow(String value) => _showBelow.value = value;
+  final RxString _showBelow = 'customer_list'.obs;
+  String get showWidget => _showBelow.value;
+  set showWidget(String value) => _showBelow.value = value;
 
   final _deleteStatus = Rx<RxStatus>(RxStatus.empty());
   RxStatus get deleteStatus => _deleteStatus.value;
@@ -41,26 +41,26 @@ class HomeLogic extends GetxController {
 
   onTapCustomer(Customer customer) {
     setCurrentCustomer = customer;
-    showBelow = 'detail_card';
+    showWidget = 'detail_card';
     Get.find<CustomerEditLogic>().initForm();
   }
 
   onFab() {
-    showBelow = 'new_customer_form';
+    showWidget = 'new_customer_form';
   }
 
   onEditCustomer() {
-    showBelow = 'edit_customer_form';
+    showWidget = 'edit_customer_form';
   }
 
   onDeleteTapped() {
     Get.dialog(
       AlertDialog(
-        title: const Text('Confirm to delete...'),
-        content: const Text('This customer record will be permanently deleted!'),
+        title: const Text('Confirma el borrado...'),
+        content: const Text('Este cliente se borrará de manera permanete!'),
         actions: [
-          TextButton(onPressed: onDeleteCustomer, child: const Text('Delete')),
-          TextButton(onPressed: Get.back, child: const Text('Cancel'))
+          TextButton(onPressed: onDeleteCustomer, child: const Text('Borrar')),
+          TextButton(onPressed: Get.back, child: const Text('Cancelar'))
         ],
       )
     );
@@ -75,16 +75,16 @@ class HomeLogic extends GetxController {
           await CustomerCrud().deleteCustomer(getCurrentCustomer!.id);
       if (response.code == 200) {
         _deleteStatus.value = RxStatus.success();
-        Get.snackbar('Success', response.message!,
+        Get.snackbar('Operación exitosa', response.message!,
             icon: const Icon(Icons.check_circle_outline));
-        showBelow = 'none';
+        showWidget = 'none';
       } else {
         Get.snackbar('Error :(', response.message!, icon: const Icon(Icons.error));
         _deleteStatus.value = RxStatus.error(response.message!);
       }
     } catch (e) {
       logger.e(e.toString());
-      Get.snackbar('title', e.toString(), icon: const Icon(Icons.error));
+      Get.snackbar('Error', e.toString(), icon: const Icon(Icons.error));
       _deleteStatus.value = RxStatus.error(e.toString());
     }
   }
