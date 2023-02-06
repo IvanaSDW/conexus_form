@@ -2,9 +2,9 @@ import 'package:get/get.dart';
 
 import 'logic.dart';
 
-class MTextFormFieldBinding extends Bindings {
+class CustomerEditBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => MTextFormFieldLogic());
+    Get.lazyPut(() => CustomerEditLogic());
   }
 }

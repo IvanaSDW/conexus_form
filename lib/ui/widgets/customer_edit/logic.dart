@@ -1,18 +1,16 @@
-import 'package:conexus_form/core/models/Customer.dart';
-import 'package:conexus_form/core/services/firebase_crud.dart';
-import 'package:conexus_form/core/services/response.dart';
-import 'package:conexus_form/ui/pages/home/logic.dart';
-import 'package:conexus_form/utils/constants.dart';
+import 'package:conexus_form/utils/db_names.dart';
 import 'package:conexus_form/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../core/services/firebase_crud.dart';
+import '../../../core/services/response.dart';
+import '../../../utils/constants.dart';
+import '../../pages/home/logic.dart';
 
-class CustomerFormLogic extends GetxController {
+class CustomerEditLogic extends GetxController {
   final formKey = GlobalKey<FormState>();
-
   HomeLogic homeController = Get.find<HomeLogic>();
 
-  final idController = TextEditingController();
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
   final emailController = TextEditingController();
@@ -23,11 +21,6 @@ class CustomerFormLogic extends GetxController {
   RxStatus get status => _status.value;
 
   bool _isValid() {
-    if (idController.text.trim().isEmpty) {
-      Get.snackbar('Error in ID!', 'Enter a valid ID number',
-          icon: const Icon(Icons.error), snackPosition: SnackPosition.BOTTOM);
-      return false;
-    }
     if (firstNameController.text.trim().isEmpty) {
       Get.snackbar('Error in first name!', 'You need to enter your first name',
           icon: const Icon(Icons.error), snackPosition: SnackPosition.BOTTOM);
@@ -56,15 +49,15 @@ class CustomerFormLogic extends GetxController {
       _status.value = RxStatus.loading();
       try {
         // save data to database;
-        Customer newCustomer = Customer(
-            id: idController.text,
-            firstName: firstNameController.text,
-            lastName: lastNameController.text,
-            email: emailController.text,
-          phone: phoneController.text,
-        );
+        Map<String, dynamic> newCustomerData =
+        {
+          CUSTOMER_FIRST_NAME_CN: firstNameController.text,
+          CUSTOMER_LAST_NAME_CN: lastNameController.text,
+          CUSTOMER_EMAIL_CN: emailController.text,
+          CUSTOMER_PHONE_CN: phoneController.text,
+        };
         FirebaseResponse response =
-            await CustomerCrud().addCustomer(newCustomer);
+            await CustomerCrud().editCustomer(customerId: homeController.currentCustomer!.id, newData: newCustomerData);
         if (response.code == 200) {
           _status.value = RxStatus.success();
           resetForm();
@@ -72,7 +65,7 @@ class CustomerFormLogic extends GetxController {
               icon: const Icon(Icons.fmd_good));
           homeController.showBelow = 'none';
         } else {
-          Get.snackbar('Error :(', response.message!, icon: Icon(Icons.error));
+          Get.snackbar('Error :(', response.message!, icon: const Icon(Icons.error));
           _status.value = RxStatus.error(response.message!);
         }
       } catch (e) {
@@ -88,7 +81,6 @@ class CustomerFormLogic extends GetxController {
   }
 
   void resetForm() {
-    idController.text = '';
     firstNameController.text = '';
     lastNameController.text = '';
     emailController.text = '';
@@ -97,7 +89,6 @@ class CustomerFormLogic extends GetxController {
 
   @override
   void onClose() {
-    idController.dispose();
     firstNameController.dispose();
     lastNameController.dispose();
     emailController.dispose();

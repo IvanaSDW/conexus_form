@@ -1,10 +1,12 @@
+import 'package:conexus_form/ui/pages/home/logic.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'logic.dart';
 
-class CustomerFormComponent extends StatelessWidget {
-  static CustomerFormLogic logic = Get.put(CustomerFormLogic());
+class CustomerEditComponent extends StatelessWidget {
+  final logic = Get.put<CustomerEditLogic>(CustomerEditLogic());
+  HomeLogic homeController = Get.find<HomeLogic>();
 
   @override
   Widget build(BuildContext context) {
@@ -15,14 +17,7 @@ class CustomerFormComponent extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              TextFormField(
-                controller: logic.idController,
-                decoration: const InputDecoration(
-                  labelText: 'Enter Id',
-                  border: OutlineInputBorder(),
-                  isDense: true,
-                ),
-              ),
+              Text(homeController.currentCustomer!.id),
               const SizedBox(
                 height: 12,
               ),

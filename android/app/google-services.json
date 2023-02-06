@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "222998616932",
+    "project_id": "conexusit-test",
+    "storage_bucket": "conexusit-test.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:222998616932:android:69535248d05e073488b871",
+        "android_client_info": {
+          "package_name": "com.example.conexus_form"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "222998616932-gi10n62gurcv59dokvse0l4qjhq2kmue.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDg6GgV6QclldCl3ZBb56ld2csT3lGpPCY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "222998616932-gi10n62gurcv59dokvse0l4qjhq2kmue.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
