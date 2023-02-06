@@ -52,4 +52,18 @@ class CustomerCrud {
         .snapshots();
   }
 
+  Future<FirebaseResponse> deleteCustomer(String customerId) async {
+    FirebaseResponse response = FirebaseResponse();
+    await _customers.doc(customerId).delete()
+    .then((value) {
+      response.code = 200;
+      response.message = 'Successfully deleted from database!';
+    })
+    .catchError((error) {
+      response.code = 500;
+      response.message = error;
+    });
+    return response;
+  }
+
 }

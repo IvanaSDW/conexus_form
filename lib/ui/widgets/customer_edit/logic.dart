@@ -1,3 +1,4 @@
+import 'package:conexus_form/ui/widgets/customer_detail_card/view.dart';
 import 'package:conexus_form/utils/db_names.dart';
 import 'package:conexus_form/utils/extensions.dart';
 import 'package:flutter/material.dart';
@@ -57,13 +58,13 @@ class CustomerEditLogic extends GetxController {
           CUSTOMER_PHONE_CN: phoneController.text,
         };
         FirebaseResponse response =
-            await CustomerCrud().editCustomer(customerId: homeController.currentCustomer!.id, newData: newCustomerData);
+            await CustomerCrud().editCustomer(customerId: homeController.getCurrentCustomer!.id, newData: newCustomerData);
         if (response.code == 200) {
           _status.value = RxStatus.success();
-          resetForm();
+          initForm();
           Get.snackbar('Success', response.message!,
-              icon: const Icon(Icons.fmd_good));
-          homeController.showBelow = 'none';
+              icon: const Icon(Icons.check_circle_outline));
+          homeController.showBelow = 'detail_card';
         } else {
           Get.snackbar('Error :(', response.message!, icon: const Icon(Icons.error));
           _status.value = RxStatus.error(response.message!);
@@ -77,14 +78,14 @@ class CustomerEditLogic extends GetxController {
   }
 
   onCancel() {
-    homeController.showBelow = 'none';
+    homeController.showBelow = 'detail_card';
   }
 
-  void resetForm() {
-    firstNameController.text = '';
-    lastNameController.text = '';
-    emailController.text = '';
-    phoneController.text = '';
+  void initForm() {
+    firstNameController.text = homeController.getCurrentCustomer!.firstName;
+    lastNameController.text = homeController.getCurrentCustomer!.lastName;
+    emailController.text = homeController.getCurrentCustomer!.email;
+    phoneController.text = homeController.getCurrentCustomer!.phone;
   }
 
   @override

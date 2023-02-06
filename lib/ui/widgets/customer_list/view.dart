@@ -27,16 +27,27 @@ class CustomerListComponent extends StatelessWidget {
                   ),
                 );
               } else {
-                return ListView(
-                    children: snapshot.data!.docs.map((customer) {
-                  return InkWell(
-                    onTap: () => controller.onTapCustomer(customer.data()),
-                    child: CustomerListItemComponent(
-                        id: customer.data().id,
-                        firstName: customer.data().firstName,
-                        lastname: customer.data().lastName),
-                  );
-                }).toList());
+                return Obx(() {
+                  return ListView(
+                      children: snapshot.data!.docs.map((customer) {
+                        return controller.matchSearchString(customer.data())
+                            ? InkWell(
+                          onTap: () =>
+                              controller.onTapCustomer(customer.data()),
+                          child: CustomerListItemComponent(
+                              id: customer
+                                  .data()
+                                  .id,
+                              firstName: customer
+                                  .data()
+                                  .firstName,
+                              lastname: customer
+                                  .data()
+                                  .lastName),
+                        )
+                            : Container();
+                      }).toList());
+                });
               }
             }),
       ),

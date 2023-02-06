@@ -1,4 +1,3 @@
-import 'package:conexus_form/utils/constants.dart';
 
 import '../../utils/db_names.dart';
 
@@ -36,4 +35,12 @@ class Customer {
         phone: json[CUSTOMER_PHONE_CN],
         imageUrl: json[CUSTOMER_IMAGE_URL_CN],
       );
+
+  factory Customer.empty() => Customer(
+    id: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+  );
 }

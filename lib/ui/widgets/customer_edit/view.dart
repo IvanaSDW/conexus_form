@@ -6,7 +6,9 @@ import 'logic.dart';
 
 class CustomerEditComponent extends StatelessWidget {
   final logic = Get.put<CustomerEditLogic>(CustomerEditLogic());
-  HomeLogic homeController = Get.find<HomeLogic>();
+  final HomeLogic homeController = Get.find<HomeLogic>();
+
+  CustomerEditComponent({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +19,17 @@ class CustomerEditComponent extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              Text(homeController.currentCustomer!.id),
+              Container(
+                color: Colors.amber,
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    const Text('Editing: '),
+                    Text(homeController.getCurrentCustomer!.id),
+                  ],
+                ),
+              ),
               const SizedBox(
                 height: 12,
               ),
@@ -80,7 +92,7 @@ class CustomerEditComponent extends StatelessWidget {
                         shape: const StadiumBorder(),
                       ),
                       onPressed: logic.onCancel,
-                      child: const Text('Cancel'),
+                      child: const Text('Cancel', style: TextStyle(color: Colors.amber)),
                     ),
                   ],
                 );
