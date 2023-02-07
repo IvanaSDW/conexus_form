@@ -77,7 +77,8 @@ class HomeLogic extends GetxController {
         _deleteStatus.value = RxStatus.success();
         Get.snackbar('Operación exitosa', response.message!,
             icon: const Icon(Icons.check_circle_outline));
-        showWidget = 'none';
+        showWidget = 'customer_list';
+        currentCustomer.value = Customer.empty();
       } else {
         Get.snackbar('Error :(', response.message!, icon: const Icon(Icons.error));
         _deleteStatus.value = RxStatus.error(response.message!);

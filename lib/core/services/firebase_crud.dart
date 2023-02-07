@@ -17,11 +17,11 @@ class CustomerCrud {
     DocumentSnapshot customerSnapshot = await document.get();
     if (customerSnapshot.exists) {
       response.code = 409;
-      response.message = 'A customer with that ID already exists';
+      response.message = 'Ya existe un cliente con el ese ID';
     } else {
       await document.set(customer).then((value) {
         response.code = 200;
-        response.message = 'Successfully added to database';
+        response.message = 'Se agregó exitosamente a la base de datos';
       }).catchError((error) {
         response.code = 500;
         response.message = error;
@@ -36,12 +36,20 @@ class CustomerCrud {
     FirebaseResponse response = FirebaseResponse();
     await _customers.doc(customerId).update(newData).then((value) {
       response.code = 200;
-      response.message = 'Successfully updated in database';
+      response.message = 'Se actualizó exitósamente en la base de datos';
     }).catchError((error) {
       response.code = 500;
       response.message = error;
     });
     return response;
+  }
+
+  Future<Customer> fetchCustomerById(String customerId) async {
+    return await _customers.doc(customerId)
+        .withConverter<Customer>(
+        fromFirestore: (snapshot, _) => Customer.fromJson(snapshot.data()!),
+        toFirestore: (customer, _) => customer.toJson())
+        .get().then((value) => value.data()!);
   }
 
   Stream<QuerySnapshot<Customer>> fetchCustomers() {
@@ -57,7 +65,7 @@ class CustomerCrud {
     await _customers.doc(customerId).delete()
     .then((value) {
       response.code = 200;
-      response.message = 'Successfully deleted from database!';
+      response.message = 'Borrado exitosamente !';
     })
     .catchError((error) {
       response.code = 500;

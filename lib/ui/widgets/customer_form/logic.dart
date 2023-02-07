@@ -24,27 +24,27 @@ class CustomerFormLogic extends GetxController {
 
   bool _isValid() {
     if (idController.text.trim().isEmpty) {
-      Get.snackbar('Error in ID!', 'Enter a valid ID number',
+      Get.snackbar('Error en el ID!', 'Ingrese un  número de ID válido',
           icon: const Icon(Icons.error), snackPosition: SnackPosition.BOTTOM);
       return false;
     }
     if (firstNameController.text.trim().isEmpty) {
-      Get.snackbar('Error in first name!', 'You need to enter your first name',
+      Get.snackbar('Error en el nombre!', 'Debe ingresar su nombre',
           icon: const Icon(Icons.error), snackPosition: SnackPosition.BOTTOM);
       return false;
     }
     if (lastNameController.text.trim().isEmpty) {
-      Get.snackbar('Error in last name!', 'You need to enter your last name',
+      Get.snackbar('Error en el apellido!', 'Debe ingresar su apellido',
           icon: const Icon(Icons.error), snackPosition: SnackPosition.BOTTOM);
       return false;
     }
     if (!emailController.text.isValidEmail()) {
-      Get.snackbar('Error in email!', 'Enter a valid email address',
+      Get.snackbar('Error en el email!', 'Ingrese una dirección de email válida!',
           icon: const Icon(Icons.error), snackPosition: SnackPosition.BOTTOM);
       return false;
     }
     if (phoneController.text.trim().isEmpty) {
-      Get.snackbar('Error phone!', 'You need to enter your mobile phone number',
+      Get.snackbar('Error en el número movil!', 'Debe ingresar su número móvil',
           icon: const Icon(Icons.error), snackPosition: SnackPosition.BOTTOM);
       return false;
     }
@@ -57,27 +57,27 @@ class CustomerFormLogic extends GetxController {
       try {
         // save data to database;
         Customer newCustomer = Customer(
-            id: idController.text,
-            firstName: firstNameController.text,
-            lastName: lastNameController.text,
-            email: emailController.text,
-          phone: phoneController.text,
+            id: idController.text.trim(),
+            firstName: firstNameController.text.trim(),
+            lastName: lastNameController.text.trim(),
+            email: emailController.text.trim(),
+          phone: phoneController.text.trim(),
         );
         FirebaseResponse response =
             await CustomerCrud().addCustomer(newCustomer);
         if (response.code == 200) {
           _status.value = RxStatus.success();
           resetForm();
-          Get.snackbar('Success', response.message!,
+          Get.snackbar('Operación exitosa', response.message!,
               icon: const Icon(Icons.check_circle_outline));
-          homeController.showWidget = 'none';
+          homeController.showWidget = 'customer_list';
         } else {
-          Get.snackbar('Error :(', response.message!, icon: Icon(Icons.error));
+          Get.snackbar('Error :(', response.message!, icon: const Icon(Icons.error));
           _status.value = RxStatus.error(response.message!);
         }
       } catch (e) {
         logger.e(e.toString());
-        Get.snackbar('title', e.toString(), icon: const Icon(Icons.error));
+        Get.snackbar('Error', e.toString(), icon: const Icon(Icons.error));
         _status.value = RxStatus.error(e.toString());
       }
     }
